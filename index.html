@@ -57,14 +57,19 @@
                 let posx = 0 || u;
                 ctx.clearRect(0, 0, w, h);
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                ctx.fillRect((w / 2) + posx / 180 * w / 2 - (h / 2), 0, h, h);
+                ctx.fillRect((w / 2 + (posx / 30) * h / 2 - h / 2), 0, h, h);
+                ctx.strokeStyle = 'rgb(255,0,0)';
+                ctx.beginPath();
+                ctx.moveTo(w / 2, 0);
+                ctx.lineTo(w / 2, h);
+                ctx.stroke();
                 requestAnimationFrame(update);
             }
 
             update();
         </script>
     </canvas>
-    <h1>Ver.2</h1>
+    <h1>Ver.3</h1>
     <h1 id="gamma">--</h1>
     <button id="start">啟動偵測</button>
 
