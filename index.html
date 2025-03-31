@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手機橫向傾角偵測</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #angle {
+            font-size: 2em;
+            margin-top: 20px;
+        }
+
+        button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Ver.0</h1>
+    <h1 id="gamma">--</h1>
+    <button id="start">啟動偵測</button>
+
+    <script>
+        let gammaText = document.getElementById('gamma');
+        let startButton = document.getElementById('start');
+
+        function handleOrientation(event) {
+            let beta = event.beta; // γ 表示左右傾斜
+            gammaText.innerText = `橫向傾角: ${beta.toFixed(2)}°`;
+        }
+
+        function requestPermission() {
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission().then(permissionState => {
+                    if (permissionState === "granted") {
+                        window.addEventListener("deviceorientation", handleOrientation);
+                        startButton.style.display = "none";
+                    } else {
+                        gammaText.innerText = "需要授權才能讀取感測器數據";
+                    }
+                }).catch(console.error);
+            } else {
+                // 如果瀏覽器不需要手動授權
+                window.addEventListener("deviceorientation", handleOrientation);
+                startButton.style.display = "none";
+            }
+        }
+
+        startButton.addEventListener("click", requestPermission);
+    </script>
+</body>
+
+</html>
