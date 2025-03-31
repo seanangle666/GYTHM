@@ -9,7 +9,7 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 50px;
+            margin: 0;
         }
 
         #angle {
@@ -23,10 +23,47 @@
             margin-top: 20px;
             cursor: pointer;
         }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: -1;
+        }
     </style>
 </head>
 
 <body>
+    <canvas>
+        <script>
+            let canvas = document.querySelector('canvas');
+            let ctx = canvas.getContext('2d');
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            let u = 0; // Define 'u' globally to avoid errors
+
+            function update() {
+                let w=canvas.width;
+                let h=canvas.height;
+                let posx = 0 || u;
+                ctx.clearRect(0, 0, w, h);
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.fillRect((w/2)+posx-(h/2), 0, h, h);
+                requestAnimationFrame(update);
+            }
+
+            update();
+        </script>
+    </canvas>
     <h1>Ver.0</h1>
     <h1 id="gamma">--</h1>
     <button id="start">啟動偵測</button>
@@ -36,8 +73,8 @@
         let startButton = document.getElementById('start');
 
         function handleOrientation(event) {
-            let beta = event.beta; // γ 表示左右傾斜
-            gammaText.innerText = `橫向傾角: ${beta.toFixed(2)}°`;
+            u = event.beta; // γ 表示左右傾斜
+            gammaText.innerText = `橫向傾角: ${u.toFixed(2)}°`;
         }
 
         function requestPermission() {
