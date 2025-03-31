@@ -27,7 +27,7 @@
         canvas {
             position: absolute;
             top: 0;
-            width: 100%;
+            width: 200h;
             height: 100%;
             display: block;
             z-index: -1;
@@ -63,13 +63,20 @@
                 ctx.moveTo(w / 2, 0);
                 ctx.lineTo(w / 2, h);
                 ctx.stroke();
+                for (let i = 0; i < 5; i++) {
+                    ctx.strokeStyle = 'rgb(255,0,0)';
+                    ctx.beginPath();
+                    ctx.moveTo(((w - (2 * h)) / 2) + (h / 2) * i, h);
+                    ctx.lineTo(w / 2, 0);
+                    ctx.stroke();
+                }
                 requestAnimationFrame(update);
             }
 
             update();
         </script>
     </canvas>
-    <h1>Ver.4</h1>
+    <h1>Ver 0.5</h1>
     <h1 id="gamma">--</h1>
     <button id="start">啟動偵測</button>
 
