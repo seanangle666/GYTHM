@@ -41,6 +41,9 @@
             let canvas = document.querySelector('canvas');
             let ctx = canvas.getContext('2d');
 
+            let poslane = 0;
+            let w, h = 0;
+
             function resizeCanvas() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
@@ -52,22 +55,26 @@
             let u = 0; // Define 'u' globally to avoid errors
 
             function update() {
-                let w = canvas.width;
-                let h = canvas.height;
+                w = canvas.width;
+                h = canvas.height;
                 let posx = Math.max(-30, Math.min(30, u)) || 0;
 
                 ctx.clearRect(0, 0, w, h);
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
                 ctx.fillRect((w / 2 + (posx / 30) * h / 2 - h / 2), 0, h, h);
-                ctx.strokeStyle = 'rgb(255,0,0)';
+                ctx.fillStyle = 'rgb(255, 0, 0)';
+                ctx.lineWidth = 10;
+                ctx.strokeRect(((w - (2 * h)) / 2) + (h / 4) * poslane, 0, h, h); //(w - (2 * h)) / 2) + (h / 4) 一個軌的位置
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = 'rgb(0,255,255)';
                 ctx.beginPath();
                 ctx.moveTo(w / 2, 0);
                 ctx.lineTo(w / 2, h);
                 ctx.stroke();
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < 9; i++) {
                     ctx.strokeStyle = 'rgb(255,0,0)';
                     ctx.beginPath();
-                    ctx.moveTo(((w - (2 * h)) / 2) + (h / 2) * i, h);
+                    ctx.moveTo(((w - (2 * h)) / 2) + (h / 4) * i, h);
                     ctx.lineTo(w / 2, 0);
                     ctx.stroke();
                 }
@@ -84,6 +91,18 @@
     <script>
         let gammaText = document.getElementById('gamma');
         let startButton = document.getElementById('start');
+
+        function squareTo(pos, time) {
+            let startLane = poslane;
+            let startTime = Date.now();
+            let interval = setInterval(() => {
+                let elapsed = Date.now() - startTime;
+                let t = Math.min(elapsed / (time * 1000), 1);
+                poslane = startLane + (pos - startLane) * t; // 線性插值
+                if (t === 1) clearInterval(interval);
+            }, 16);
+        }
+
 
         function handleOrientation(event) {
             u = event.beta; // γ 表示左右傾斜
