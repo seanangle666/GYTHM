@@ -16,11 +16,9 @@ class Note {
     }
 }
 
-for (let i = 1; i < 10; i++) {
+for (let i = 0; i < 10; i++) {
     notes.push(new Note(0, 0, i));
 }
-
-let bruh = 10;
 
 function to3D(x, y, z) {
     return [x / z, y / z];
@@ -89,7 +87,7 @@ function update() {
         ctx.lineTo(f[0] + w / 2, f[1]);
         ctx.stroke();
     }
-    for (let i = 1; i < notes.length; i++) {
+    for (let i = 0; i < notes.length; i++) {
         tap(notes[i].rail, h, notes[i].time - time);
     }
     requestAnimationFrame(update);
