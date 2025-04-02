@@ -28,7 +28,7 @@ class Note {
                     ctx.stroke();
                 }
                 break;
-            case 1: // Hold Note
+            case 4: // Hold Note
                 if (time > this.time) {
                     poslane = this.rail;
                 }
@@ -38,7 +38,7 @@ class Note {
 }
 
 for (let i = 0; i < 100; i++) {
-    notes.push(new Note(i % 2, 1, (60 / 140) * i));  // Test chart creator
+    notes.push(new Note(i % 2, 4, (60 / 140) * i));  // Test chart creator
 }
 
 function to3D(x, y, z) {
