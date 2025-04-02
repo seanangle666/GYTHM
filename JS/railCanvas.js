@@ -4,7 +4,7 @@ let startTime = Date.now();
 let canvas = document.querySelector('canvas');
 let ctx = canvas.getContext('2d');
 
-let poslane = 1;
+let poslane = 0;
 let w, h, startPos, railW = 0;
 let notes = [];
 
@@ -14,25 +14,35 @@ class Note {
         this.type = type; // 0: Tap, 1: Hold, 2: Flick, 3: Crash 4: Change
         this.time = time;
     }
+
+
+    drawNote() {
+        switch (this.type) {
+            case 0:
+                let t = this.time - time;
+                ctx.lineWidth = 25 / t;
+                ctx.strokeStyle = 'rgb(0,0,0)';
+                ctx.beginPath();
+                let f = to3D(startPos + railW * this.rail, h, t);
+                ctx.moveTo(f[0] + w / 2, f[1]);
+                f = to3D(startPos + railW * (this.rail + 2), h, t);
+                ctx.lineTo(f[0] + w / 2, f[1]);
+                ctx.stroke();
+            case 1:
+                if (time > this.time) {
+                    poslane = this.rail;
+                }
+                break;
+        }
+    }
 }
 
-for (let i = 0; i < 10; i++) {
-    notes.push(new Note(0, 0, i));
+for (let i = 0; i < 100; i++) {
+    notes.push(new Note(i % 2, 1, (60 / 140) * i));  //test chart creator
 }
 
 function to3D(x, y, z) {
     return [x / z, y / z];
-}
-
-function tap(x, y, z) {
-    ctx.lineWidth = 25 / z;
-    ctx.strokeStyle = 'rgb(0,0,0)';
-    ctx.beginPath();
-    let f = to3D(startPos + railW * x, h, z);
-    ctx.moveTo(f[0] + w / 2, f[1]);
-    f = to3D(startPos + railW * (x + 2), h, z);
-    ctx.lineTo(f[0] + w / 2, f[1]);
-    ctx.stroke();
 }
 
 function squareTo(pos, time) {
@@ -87,9 +97,12 @@ function update() {
         ctx.lineTo(f[0] + w / 2, f[1]);
         ctx.stroke();
     }
+
     for (let i = 0; i < notes.length; i++) {
-        tap(notes[i].rail, h, notes[i].time - time);
+        notes[i].drawNote();
     }
+
+
     requestAnimationFrame(update);
 }
 
