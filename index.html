@@ -43,6 +43,7 @@
 
             let poslane = 2;
             let w, h = 0;
+            let noteOnrail = [[1, 1], [2, 2], [3, 3], [4, 4]]; // 假設這是你要畫的音符位置
 
             function resizeCanvas() {
                 canvas.width = window.innerWidth;
@@ -62,9 +63,9 @@
                 ctx.clearRect(0, 0, w, h);
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
                 ctx.fillRect((w / 2 + (posx / 30) * h / 2 - h / 2), 0, h, h);
-                ctx.fillStyle = 'rgb(255, 0, 0)';
+                ctx.strokeStyle = 'rgb(255, 0, 0)';
                 ctx.lineWidth = 10;
-                ctx.strokeRect(((w - (2 * h)) / 2) + (h / 4) * poslane, 0, h, h); //(w - (2 * h)) / 2) + (h / 4) 一個軌的位置
+                ctx.strokeRect(((w - (2 * h)) / 2) + (h / 4) * poslane, 0, h, h); //(w - (2 * h)) / 2) + (h / 4)  * pos
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = 'rgb(0,255,255)';
                 ctx.beginPath();
@@ -72,13 +73,24 @@
                 ctx.lineTo(w / 2, h);
                 ctx.stroke();
                 for (let i = 0; i < 9; i++) {
-                    ctx.strokeStyle = 'rgb(255,0,0)';
+                    ctx.strokeStyle = 'rgb(0,0,0)';
                     ctx.beginPath();
                     ctx.moveTo(((w - (2 * h)) / 2) + (h / 4) * i, h);
                     ctx.lineTo(w / 2, 0);
                     ctx.stroke();
                 }
+                for (let i = 0; i < noteOnrail.length; i++) {
+                    tap(noteOnrail[i][0], noteOnrail[i][1]);
+                }
                 requestAnimationFrame(update);
+            }
+
+            function tap(rail, y) {
+                ctx.strokeStyle = 'rgb(0,0,0)';
+                ctx.beginPath();
+                ctx.moveTo(((w - (2 * h)) / 2) + (h / 4) * rail, y);
+                ctx.lineTo(((w - (2 * h)) / 2) + (h / 4) * rail + 1, y);
+                ctx.stroke();
             }
 
             update();
@@ -102,7 +114,6 @@
                 if (t === 1) clearInterval(interval);
             }, 16);
         }
-
 
         function handleOrientation(event) {
             u = event.beta; // γ 表示左右傾斜
