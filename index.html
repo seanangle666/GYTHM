@@ -4,35 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>手機橫向傾角偵測</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-        }
-
-        #angle {
-            font-size: 2em;
-            margin-top: 20px;
-        }
-
-        button {
-            font-size: 1.2em;
-            padding: 10px 20px;
-            margin-top: 20px;
-            cursor: pointer;
-        }
-
-        canvas {
-            position: absolute;
-            top: 0;
-            width: 200;
-            height: 100%;
-            display: block;
-            z-index: -1;
-        }
-    </style>
+    <title>GYTHM</title>
+    <link rel="stylesheet" href="Styles/style.css">
 </head>
 
 <body>
@@ -46,9 +19,6 @@
     <script>
         let gammaText = document.getElementById('gamma');
         let startButton = document.getElementById('start');
-
-        
-
 
         function handleOrientation(event) {
             u = event.beta; // γ 表示左右傾斜
