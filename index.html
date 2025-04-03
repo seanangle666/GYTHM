@@ -12,7 +12,7 @@
     <canvas>
         <script src="./JS/railCanvas.js"></script>
     </canvas>
-    <h1>Ver. β1</h1>
+    <h1>Ver. β1.1</h1>
     <h1 id="gamma">--</h1>
     <button id="start">啟動偵測</button>
 
@@ -22,6 +22,7 @@
 
         function handleOrientation(event) {
             u = event.beta; // γ 表示左右傾斜
+            u = u ?? 0;
             gammaText.innerText = `橫向傾角: ${u.toFixed(2)}°`;
         }
 

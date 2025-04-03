@@ -1,26 +1,32 @@
 let start = false, display_midLine = false;
-let time = 0, startTime = Date.now();
+let startTimeDelay = 0; // 離開始的延遲
+let time = -startTimeDelay, startTime = Date.now();
 let canvas = document.querySelector('canvas');
 let ctx = canvas.getContext('2d');
 
 let poslane = 0, w, h, startPos, railW = 0;
 let notes = [];
+const railNums = 8; // 軌道數量:)
+const jdHeight = 1.5; // 判定線的高度(秒)
+const laneWidthMultiplier = 0.8; // 軌道寬度與h的比率
+const laneHeight = 10; // 這是軌道的長度(z)
 
 class Note {
-    constructor(rail, type, time, detail) {
+    constructor(rail = 0, type = 0, _time = 0, detail = 0) {
         this.rail = rail;
         this.type = type; // 0: Tap, 1: Hold, 2: Flick, 3: Crash, 4: Change
-        this.time = time;
+        this._time = _time;
         this.detail = detail;
     }
 
     drawNote() {
-        let t = this.time - time;
+        let t = this._time - time + jdHeight;
         switch (this.type) {
             case 0: // Tap Note
-                if (t > 0) {
-                    ctx.lineWidth = 25 / t;
-                    ctx.strokeStyle = 'rgb(0,0,0)';
+                if (t >= jdHeight && t < laneHeight) {// 限制可以顯示的高度到laneHeight
+                    ctx.lineWidth = 45 / t;
+                    ctx.strokeStyle = 'rgb(240, 194, 57)';
+                    // 我先把Tap改成橘色的
                     ctx.beginPath();
                     let f1 = to3D(startPos + railW * this.rail, h, t);
                     let f2 = to3D(startPos + railW * (this.rail + 2), h, t);
@@ -31,9 +37,9 @@ class Note {
                 break;
 
             case 1: // Hold Note
-                if (t > 0) {
-                    ctx.lineWidth = 25 / t;
-                    ctx.strokeStyle = 'rgb(0,0,0)';
+                if (t >= (jdHeight - this.detail) && t < laneHeight) {// 加上Hold的秒數
+                    ctx.fillStyle = 'rgb(97, 178, 255)';
+                    // 把Hold改成藍的
                     ctx.beginPath();
                     let f1 = to3D(startPos + railW * this.rail, h, t);
                     let f2 = to3D(startPos + railW * (this.rail + 2), h, t);
@@ -45,7 +51,6 @@ class Note {
                     hold.lineTo(f4[0] + w / 2, f4[1]);
                     hold.lineTo(f3[0] + w / 2, f3[1]);
                     hold.lineTo(f1[0] + w / 2, f1[1]);
-                    ctx.fillStyle = 'rgb(0,0,0)';
                     ctx.fill(hold, 'evenodd');
                 }
                 break;
@@ -60,9 +65,9 @@ class Note {
     }
 }
 
-notes.push(new Note(0, 1, 3, 1));   // Test chart creator
+notes.push(new Note(0, 1, 1, 1));   // Test chart creator
 for (let i = 0; i < 100; i++) {
-    notes.push(new Note(2, 0, (60 / 140) * i));
+    notes.push(new Note(2, 0, i)); // 理論上來說是不是可以放浮點數？？？
 }
 
 function to3D(x, y, z) {    // to3d(rail, canvas height, time)
@@ -81,22 +86,23 @@ function squareTo(pos, time) {      // smooth move rail area
 }
 
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth * 2; // 提高解析度所以不要動
+    canvas.height = window.innerHeight * 2; // 提高解析度所以不要動
 }
 
-window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 
 let u = 0; // 定義 'u' 避免錯誤
 
 function update() {
-    if (start) time = (Date.now() - startTime) / 1000;
+    if (start) time = (Date.now() - startTime) / 1000 - startTimeDelay;
     w = canvas.width;
     h = canvas.height;
-    railW = h / 4;
-    startPos = -(h + railW * 4) / 2;
-
+    railW = h / (railNums / 2);
+    startPos = - (h + railW * (railNums / 2)) / 2;
+    startPos *= laneWidthMultiplier;
+    railW *= laneWidthMultiplier;
     let posx = Math.max(-32, Math.min(32, u)) || 0;
     ctx.clearRect(0, 0, w, h);
 
@@ -115,16 +121,29 @@ function update() {
     }
 
     // Draw rails
-    ctx.lineWidth = 1;
-    for (let i = 0; i < 9; i++) {
-        ctx.strokeStyle = 'rgb(0,0,0)';
+    ctx.lineWidth = 2;
+    for (let i = 0; i <= railNums; i++) {
+        ctx.strokeStyle =
+            (i % 2 == 0) ?
+                'rgb(0, 0, 0)' : 'rgb(70, 70, 70)';
+        // 這效果就是偶數軌黑，奇數白
+
         ctx.beginPath();
         let f1 = to3D(startPos + railW * i, h, 1);
-        let f2 = to3D(startPos + railW * i, h, 10);
+        let f2 = to3D(startPos + railW * i, h, laneHeight);
         ctx.moveTo(f1[0] + w / 2, f1[1]);
         ctx.lineTo(f2[0] + w / 2, f2[1]);
         ctx.stroke();
     }
+
+    // Draw judge line
+    ctx.lineWidth = 10;
+    let _f1 = to3D(startPos, h, jdHeight);
+    let _f2 = to3D(startPos + railW * railNums, h, jdHeight);
+    ctx.beginPath();
+    ctx.moveTo(_f1[0] + w / 2, _f1[1]);
+    ctx.lineTo(_f2[0] + w / 2, _f2[1]);
+    ctx.stroke();
 
     // Draw notes
     for (let note of notes) {
