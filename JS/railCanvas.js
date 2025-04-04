@@ -1,8 +1,9 @@
-let start = false, display_midLine = false;
-let startTimeDelay = 1; // 離開始的延遲
-let time = -startTimeDelay, startTime = Date.now();
-let canvas = document.querySelector('canvas');
-let ctx = canvas.getContext('2d');
+let start = false,
+    display_midLine = false,
+    startTimeDelay = 4 * (60 / 240), // 離開始的延遲
+    time = -startTimeDelay, startTime = Date.now(),
+    canvas = document.querySelector('canvas'),
+    ctx = canvas.getContext('2d');
 
 let color = {
     tap: 'rgb(0, 0, 255)',
@@ -15,13 +16,13 @@ let color = {
 
 let poslane = 0, w, h, startPos, railW = 0;
 let notes = [];
-const railNums = 8; // 軌道數量 :)
-const jdHeight = 1.2; // 判定線的高度(秒)
-const laneWidthMultiplier = 1; // 軌道寬度與h的比率
-const laneHeight = 16; // 這是軌道的長度(z)
-const maxTurnAngle = 30;
+const railNums = 8, // 軌道數量 :)
+    jdHeight = 1.2,// 判定線的高度(秒)
+    laneWidthMultiplier = 1,// 軌道寬度與h的比率
+    laneHeight = 16,// 這是軌道的長度(z)
+    maxTurnAngle = 30;
 let speed = 10;
-let playbackSpeed = 0.25;
+let playbackSpeed = 1;
 
 class Note {
     constructor(rail = 0, type = 0, _time = 0, detail = 0) {
@@ -50,7 +51,7 @@ class Note {
             case 1: // Hold Note
                 if (t >= (- this.detail) && t < laneHeight / speed) {  // 加上Hold的秒數
                     t = t * speed + jdHeight;
-                    ctx.fillStyle = color.hold;    // 把Hold改成藍的
+                    ctx.fillStyle = color.hold;
                     ctx.beginPath();
                     let f1 = to3D(startPos + railW * this.rail, h, Math.max(t, jdHeight));
                     let f2 = to3D(startPos + railW * (this.rail + 2), h, Math.max(t, jdHeight));
@@ -115,13 +116,25 @@ class Note {
     }
 }
 
-for (let i = 0; i < 100; i++) {
-    notes.push(new Note(0, 0, i * (60 / 240) / 3));
-    notes.push(new Note(6, 0, i * (60 / 240) / 3));
-    notes.push(new Note(2, 0, (i + 0.5) * (60 / 240) / 3));
-    notes.push(new Note(4, 1, i * (60 / 240) / 3, (60 / 240) / 3 * 5));
+function decode_chart(chart) {
+    _httpRequest = new XMLHttpRequest();
+    _httpRequest.open("GET", "../CHART/" + chart + ".txt", false);
+    _httpRequest.send();
+    if (_httpRequest.status == 200) {
+        chart = _httpRequest.responseText;
+    } else {
+        return Error("unable to find chart : " + chart);
+    }
+    for (let i = 0; i < 6 * 16; i++) {
+        notes.push(new Note(0, 0, i * (60 / 240) / 3));
+        notes.push(new Note(6, 0, i * (60 / 240) / 3));
+        notes.push(new Note(2, 0, (i + 0.5) * (60 / 240) / 3));
+        notes.push(new Note(4, 1, i * (60 / 240) / 3, (60 / 240) / 3 * 5));
+    }
+    return chart;
 }
 
+console.log(decode_chart(String(1).padStart(5, '0') + "-" + "master"));
 
 function to3D(x, y, z) {
     // to3d(rail, canvas height, time)
@@ -166,8 +179,8 @@ function update() {
         ctx.lineWidth = h * 0.005;
         ctx.strokeStyle = 'rgb(0,0,100)';
         ctx.beginPath();
-        ctx.moveTo(w / 2, 0);
-        ctx.lineTo(w / 2, h);
+        ctx.moveTo(w / 2 - h * 0.0025, 0);
+        ctx.lineTo(w / 2 - h * 0.0025, h);
         ctx.stroke();
     }
 

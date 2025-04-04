@@ -13,9 +13,10 @@
     <canvas>
         <script src="./JS/railCanvas.js"></script>
     </canvas>
-    <div id="version">Ver. β1.2</div>
+    <div id="version">Ver. β1.2.1</div>
     <div id="gamma">--</div>
     <button id="start">Start</button>
+    <button id="restart" style="display: none; opacity: 0;"></button>
 
     <script>
         let gammaText = document.getElementById('gamma');
@@ -28,21 +29,28 @@
         }
 
         function requestPermission() {
+            function a() {
+                window.addEventListener("deviceorientation", handleOrientation);
+                startButton.style.opacity = 0;
+                startButton.disabled = true;
+                setTimeout(function(e){
+                    startButton.style.display = "none";
+                },300)
+            }
             start = true;
             startTime = Date.now();
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission().then(permissionState => {
                     if (permissionState === "granted") {
-                        window.addEventListener("deviceorientation", handleOrientation);
-                        startButton.style.display = "none";
+                        a();
                     } else {
+                        alert("需要授權才能讀取感測器數據");
                         gammaText.innerText = "需要授權才能讀取感測器數據";
                     }
                 }).catch(console.error);
             } else {
                 // 如果瀏覽器不需要手動授權
-                window.addEventListener("deviceorientation", handleOrientation);
-                startButton.style.display = "none";
+                a();
             }
         }
 

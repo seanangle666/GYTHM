@@ -1,0 +1,12 @@
+&DLY=0,
+&TLE=Moon,
+&ART=Moodent,
+&DES=Seanangle,
+| this is comment 
+"/" is time split 
+for example : 4/ means split to 4
+"#" assign bpm
+for example : 140# means 140 bpm
+"()" is like comment but it's brackets|
+
+(148#) 1/, 8/,,1,2,4*2,3,12<4/2>*31,,,
