@@ -7,7 +7,7 @@ let song = {
     'level': 0,
 }
 
-fetch('../CHART/' + String(song.songId).padStart(4, '0') + '_' + song.level + '.txt')
+fetch('./CHART/' + String(song.songId).padStart(4, '0') + '_' + song.level + '.txt')
     .then(response => response.text())
     .then(data => {
         chartTemp = data.replace(/[()]|(\|.*\|)/g, "").replace(/(?:\r\n|\r|\n)/g, '').split(",");
