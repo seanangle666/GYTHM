@@ -7,19 +7,29 @@
     <title>GYTHM</title>
     <link rel="stylesheet" href="Styles/style.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script src="./JS/noteClass.js"></script>
 </head>
 
 <body>
-    <canvas>
-        <script src="./JS/railCanvas.js"></script>
-    </canvas>
-    <div id="version">Ver. β1.2</div>
+    <canvas id="screen"></canvas>
+    <script src="./JS/ChartAnalyze.js"></script>
+    <script src="./JS/railCanvas.js"></script>
+    <div class="owo"></div>
+    <div class="TITLE">GYNITHM</div>
+    <div id="version">Ver. β1.3</div>
     <div id="gamma">--</div>
+    <input id="timebar" type="range" min="0" max="100" value="0" step="0.001">
     <button id="start">Start</button>
-
+    <button id="restart" style="display: none; opacity: 0;"></button>
     <script>
         let gammaText = document.getElementById('gamma');
         let startButton = document.getElementById('start');
+        let timebar = document.getElementById('timebar');
+
+        timebar.addEventListener('input', function () {
+            let value = parseInt(this.value);
+            time = (chartNoteData.endTime + startTimeDelay) * (value / 100) - startTimeDelay;
+        });
 
         function handleOrientation(event) {
             u = event.beta; // γ 表示左右傾斜
@@ -28,21 +38,29 @@
         }
 
         function requestPermission() {
+            function a() {
+                window.addEventListener("deviceorientation", handleOrientation);
+                startButton.style.opacity = 0;
+                document.getElementsByClassName('owo')[0].style.opacity = 0;
+                document.getElementsByClassName('TITLE')[0].style.opacity = 0;
+                startButton.disabled = true;
+                setTimeout(function (e) {
+                    startButton.style.display = "none";
+                }, 300)
+            }
             start = true;
             startTime = Date.now();
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission().then(permissionState => {
                     if (permissionState === "granted") {
-                        window.addEventListener("deviceorientation", handleOrientation);
-                        startButton.style.display = "none";
+                        a();
                     } else {
                         gammaText.innerText = "需要授權才能讀取感測器數據";
                     }
                 }).catch(console.error);
             } else {
                 // 如果瀏覽器不需要手動授權
-                window.addEventListener("deviceorientation", handleOrientation);
-                startButton.style.display = "none";
+                a();
             }
         }
 

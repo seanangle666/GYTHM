@@ -1,3 +1,5 @@
+@import url('../SEGOEICONS.TTF');
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -8,7 +10,32 @@ body {
     margin-top: 20px;
 }
 
-button {
+.owo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    transition: opacity 300ms ease;
+    opacity: 0.75;
+}
+
+.TITLE {
+    position: absolute;
+    left: 0;
+    top: 150px;
+    width: 100%;
+    font-size: 50px;
+    text-align: center;
+    color: aliceblue;
+    font-weight: 600;
+    transition: opacity 300ms ease;
+    opacity: 1;
+    text-shadow: 0 0 15px white;
+}
+
+#start {
     border-radius: 15px;
     width: 200px;
     height: 40px;
@@ -19,16 +46,41 @@ button {
     top: 50%;
     left: 50%;
     border: none;
-    box-shadow: 0 0 4px #0000004f;
+    box-shadow: 0 4px 8px #0000004f;
     transform: translateX(-50%) translateY(-50%);
-    background: lightgray;
+    background: white;
     color: white;
     text-shadow: 0 0 3px black;
     transition: all 300ms ease;
+    opacity: 1;
 }
 
-button:hover{
+#restart {
+    font-family: "Segoe Fluent Icons";
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    font-size: 1.2em;
+    padding: 5px;
+    cursor: pointer;
+    top: 0;
+    right: 0;
+    border: none;
+    box-shadow: 0 4px 8px #0000004f;
     background: white;
+    color: gray;
+    transition: all 300ms ease;
+}
+
+#start:hover {
+    background: lightgray;
+    box-shadow: 0 0px 4px #0000004f;
+}
+
+#start:active {
+    background: gray;
+    box-shadow: 0 0 4px #0000004f inset;
 }
 
 canvas {
@@ -51,4 +103,5 @@ canvas {
     padding: 5px;
     color: white;
     border-radius: 0 10px 0 0;
+    text-shadow: 0 0 3px black;
 }
