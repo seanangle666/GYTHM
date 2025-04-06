@@ -14,6 +14,7 @@
     <canvas id="screen"></canvas>
     <script src="./JS/ChartAnalyze.js"></script>
     <script src="./JS/railCanvas.js"></script>
+    <script src="./JS/ChartAudioHandler.js"></script>
     <div class="owo"></div>
     <div class="TITLE">GYTHM</div>
     <div id="version">Ver. β1.3</div>
@@ -44,12 +45,11 @@
                 document.getElementsByClassName('owo')[0].style.opacity = 0;
                 document.getElementsByClassName('TITLE')[0].style.opacity = 0;
                 startButton.disabled = true;
+                startChart();
                 setTimeout(function (e) {
                     startButton.style.display = "none";
                 }, 300)
             }
-            start = true;
-            startTime = Date.now();
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission().then(permissionState => {
                     if (permissionState === "granted") {

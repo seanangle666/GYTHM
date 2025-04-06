@@ -12,7 +12,7 @@ let start = false,
     startPos = 0,
     railW = 0,
     railNums = 8, // 軌道數量 :)
-    speed = 4,
+    speed = 10,
     playbackSpeed = 1;
 
 let canvas = document.querySelector('#screen'),
@@ -29,6 +29,13 @@ let color = {
         L: 'rgb(0, 0, 255)',
         R: 'rgb(255, 0, 0)',
     },
+}
+
+async function startChart() {
+    await loadTrack(song.songId);
+    startTime = Date.now();
+    start = true;
+    play();
 }
 
 function to3D(x, y, z) {
@@ -59,7 +66,7 @@ window.addEventListener('resize', resizeCanvas);
 let u = 0; // 定義 'u' 避免錯誤
 
 function update() {
-    if (start) time = (Date.now() - startTime) / 1000 - startTimeDelay;
+    if (start) { time = (Date.now() - startTime) / 1000 - startTimeDelay; }
     w = canvas.width;
     h = canvas.height;
     railW = h / (railNums / 2);
