@@ -7,6 +7,11 @@
     <title>GYTHM</title>
     <link rel="stylesheet" href="Styles/style.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script>
+
+        const devMode = true;
+
+    </script>
     <script src="./JS/noteClass.js"></script>
 </head>
 
@@ -14,20 +19,23 @@
     <canvas id="screen"></canvas>
     <script src="./JS/ChartAnalyze.js"></script>
     <script src="./JS/railCanvas.js"></script>
+    <script src="./JS/ChartAudioHandler.js"></script>
     <div class="owo"></div>
     <div class="TITLE">GYTHM</div>
-    <div id="version">Ver. β1.3</div>
+    <div id="version">Ver. β1.3.1</div>
     <div id="gamma">--</div>
-    <input id="timebar" type="range" min="0" max="100" value="0" step="0.001">
+    <input id="timebar" type="range" min="0" max="1" value="0" step="0.001">
     <button id="start">Start</button>
     <button id="restart" style="display: none; opacity: 0;"></button>
     <script>
+        loadSFX();
         let gammaText = document.getElementById('gamma');
         let startButton = document.getElementById('start');
         let timebar = document.getElementById('timebar');
 
         timebar.addEventListener('input', function () {
-            let value = parseInt(this.value);
+            let value = parseFloat(this.value) / parseFloat(this.attributes.max.value) * 100;
+            this.style.background = `linear-gradient(90deg,rgb(255, 69, 69) ${value}%,#ffffff50 ${value}% ,#ffffff50 100%)`;
             time = (chartNoteData.endTime + startTimeDelay) * (value / 100) - startTimeDelay;
         });
 
@@ -37,19 +45,19 @@
             gammaText.innerText = `橫向傾角: ${u.toFixed(2)}°`;
         }
 
+        function a() {
+            window.addEventListener("deviceorientation", handleOrientation);
+            startButton.style.opacity = 0;
+            document.getElementsByClassName('owo')[0].style.opacity = 0;
+            document.getElementsByClassName('TITLE')[0].style.opacity = 0;
+            startButton.disabled = true;
+            startChart();
+            setTimeout(function (e) {
+                startButton.style.display = "none";
+            }, 300)
+        }
+
         function requestPermission() {
-            function a() {
-                window.addEventListener("deviceorientation", handleOrientation);
-                startButton.style.opacity = 0;
-                document.getElementsByClassName('owo')[0].style.opacity = 0;
-                document.getElementsByClassName('TITLE')[0].style.opacity = 0;
-                startButton.disabled = true;
-                setTimeout(function (e) {
-                    startButton.style.display = "none";
-                }, 300)
-            }
-            start = true;
-            startTime = Date.now();
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission().then(permissionState => {
                     if (permissionState === "granted") {
@@ -62,6 +70,12 @@
                 // 如果瀏覽器不需要手動授權
                 a();
             }
+        }
+
+        if (devMode) {
+            document.getElementsByClassName('owo')[0].style.display = 'none';
+            document.getElementsByClassName('TITLE')[0].style.display = 'none';
+            timebar.style.display = 'block';
         }
 
         startButton.addEventListener("click", requestPermission);

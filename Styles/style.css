@@ -105,3 +105,46 @@ canvas {
     border-radius: 0 10px 0 0;
     text-shadow: 0 0 3px black;
 }
+
+#timebar {
+    appearance: none;
+    -webkit-appearance: none;
+    top: calc(50% - 10px);
+    left: calc(60px - 50vh);
+    width: calc(100vh - 60px);
+    height: 16px;
+    transform: rotateZ(-90deg);
+    position: absolute;
+    display: none;
+    margin: 0;
+    background: linear-gradient(90deg, rgb(255, 69, 69) 0%, #ffffff50 0%, #ffffff50 100%);
+    border: 2px solid rgb(165, 165, 165);
+    border-radius: 16px;
+    backdrop-filter: blur(3px);
+}
+
+#timebar::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgb(255, 69, 69);
+    /* 滑桿調整鈕底色 */
+    width: 16px;
+    /* 滑桿調整鈕長寬 */
+    height: 16px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 0 4px black;
+    cursor: pointer;
+}
+
+#timebar::-moz-range-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgb(255, 69, 69);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 0 4px black;
+    cursor: pointer;
+}

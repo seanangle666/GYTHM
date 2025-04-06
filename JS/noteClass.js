@@ -6,6 +6,7 @@ class Note {
         this.type = type ?? ''; // empty : Tap, h: Hold, f: Flick, c: Crash, g: Change
         this._time = _time;
         this.detail = detail;
+        this.actived = false;
     }
 
     drawNote() {
@@ -16,6 +17,14 @@ class Note {
                 if (t >= 0 && t < laneHeight / speed) {  // 限制可以顯示的高度到laneHeight
                     ctx.fillStyle = color.tap;
                     drawTap(_t, this.rail, (this.detail ?? '').width);
+                }
+                if (t <= 0) {
+                    if (!this.actived) {
+                        this.actived = true;
+                        playSFX('guide');
+                    }
+                } else {
+                    this.actived = false;
                 }
                 break;
             case 'h': // Hold Note
