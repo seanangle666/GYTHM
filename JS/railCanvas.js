@@ -41,6 +41,11 @@ async function startChart() {
     }, startTimeDelay * 1000);
 }
 
+function resizeCanvas() {
+    canvas.width = window.innerWidth * 2; // 提高解析度所以不要動
+    canvas.height = window.innerHeight * 2; // 提高解析度所以不要動
+}
+
 function to3D(x, y, z) {
     // to3d(rail, canvas height, time)
     const zMul = 1;
@@ -57,11 +62,6 @@ function to3D(x, y, z) {
         if (t === 1) clearInterval(interval);
     }, 16);
 }*/
-
-function resizeCanvas() {
-    canvas.width = window.innerWidth * 2; // 提高解析度所以不要動
-    canvas.height = window.innerHeight * 2; // 提高解析度所以不要動
-}
 
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
@@ -115,6 +115,7 @@ function update() {
 
     // Draw notes
     if (song.data) {
+        if(source){document.getElementById("version").innerText = `${source.context.currentTime.toFixed(2)} , ${time.toFixed(2)} , ${(source.context.currentTime - time).toFixed(2)}`;}
         for (let n of song.data.note) {
             n.drawNote();
         }
