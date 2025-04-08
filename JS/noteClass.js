@@ -71,6 +71,14 @@ class Note {
                     arrow.lineTo(f1[0] + w / 2, f1[1]);
                     ctx.fill(arrow, 'evenodd');
                 }
+                if (t <= 0) {
+                    if (!this.actived) {
+                        this.actived = true;
+                        playSFX('guide');
+                    }
+                } else {
+                    this.actived = false;
+                }
                 break;
             case 'g': // Change Note
                 if (t <= 0) {

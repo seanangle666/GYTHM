@@ -5,7 +5,7 @@ const maxTurnAngle = 30;
 
 let start = false,
     display_midLine = false,
-    startTimeDelay = 0, // 離開始的延遲
+    startTimeDelay = 1, // 離開始的延遲
     time = -startTimeDelay,
     startTime = Date.now(),
     poslane = 0, w, h,
@@ -32,10 +32,13 @@ let color = {
 }
 
 async function startChart() {
-    await loadTrack(song.songId);
+    await loadTrack();
+    await prepareBGM();
     startTime = Date.now();
     start = true;
-    play();
+    setTimeout(() => {
+        playLevelBGM();
+    }, startTimeDelay * 1000);
 }
 
 function to3D(x, y, z) {
@@ -111,19 +114,18 @@ function update() {
     ctx.stroke();
 
     // Draw notes
-    if (chartNoteData) {
-        for (let n of chartNoteData.note) {
+    if (song.data) {
+        for (let n of song.data.note) {
             n.drawNote();
         }
     }
 
-    u = Math.min(Math.max(u, - maxTurnAngle), maxTurnAngle);
     // Judgement area
     let posJudge = [
-        to3D(startPos + railW * (railNums / 2 - 2) + (u / maxTurnAngle) * (railW * railNums / 4), h, jdHeight),
-        to3D(startPos + railW * (railNums / 2 + 2) + (u / maxTurnAngle) * (railW * railNums / 4), h, jdHeight),
-        to3D(startPos + railW * (railNums / 2 + 2) + (u / maxTurnAngle) * (railW * railNums / 4), h * -2, jdHeight),
-        to3D(startPos + railW * (railNums / 2 - 2) + (u / maxTurnAngle) * (railW * railNums / 4), h * -2, jdHeight)];
+        to3D(startPos + railW * (railNums / 2 - 2) + (posx / maxTurnAngle) * (railW * railNums / 4), h, jdHeight),
+        to3D(startPos + railW * (railNums / 2 + 2) + (posx / maxTurnAngle) * (railW * railNums / 4), h, jdHeight),
+        to3D(startPos + railW * (railNums / 2 + 2) + (posx / maxTurnAngle) * (railW * railNums / 4), h * -2, jdHeight),
+        to3D(startPos + railW * (railNums / 2 - 2) + (posx / maxTurnAngle) * (railW * railNums / 4), h * -2, jdHeight)];
 
     ctx.fillStyle = 'rgba(84, 84, 84, 0.1)';
     let square = new Path2D();
