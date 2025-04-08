@@ -1,4 +1,4 @@
-@import url('../SEGOEICONS.TTF');
+@import url('../asset/SEGOEICONS.TTF');
 
 body {
     font-family: Arial, sans-serif;
@@ -141,11 +141,52 @@ body {
 #timebar::-moz-range-thumb {
     appearance: none;
     -webkit-appearance: none;
-    background: rgb(255, 69, 69);
+    background: rgb(69, 69, 69);
     width: 16px;
     height: 16px;
     border-radius: 50%;
     border: none;
     box-shadow: 0 0 4px black;
     cursor: pointer;
+}
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 250px;
+    height: 100vh;
+    background-color: #333;
+    color: white;
+    transition: left 0.3s ease;
+    z-index: 1000;
+    padding: 20px;
+}
+
+#sidebar.active {
+    left: 0;
+}
+
+#toggle-button {
+    position: fixed;
+    top: 50%;
+    left: 0px;
+    transform: translate(0, -50%);
+    background-color: #444;
+    color: white;
+    padding: 10px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: left 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    z-index: 1001;
+}
+
+#toggle-button.visible {
+    opacity: 1;
 }

@@ -9,7 +9,7 @@ let sfx = {
 };
 
 async function loadSFX() {
-    const res = await fetch('./answer.wav');
+    const res = await fetch('./asset/SFX/answer.wav');
     const arrayBuffer = await res.arrayBuffer();
     sfx.guide = await Music.decodeAudioData(arrayBuffer);
 }
