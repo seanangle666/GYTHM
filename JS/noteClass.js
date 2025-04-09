@@ -2,7 +2,7 @@ const noteHeight = 0.1;
 
 class Note {
     constructor(rail, type, _time, detail) {
-        this.rail = parseFloat(rail);
+        this.rail = parseInt(`${rail}`,16)/2;
         this.type = type ?? ''; // empty : Tap, h: Hold, f: Flick, c: Crash, g: Change
         this._time = _time;
         this.detail = detail;

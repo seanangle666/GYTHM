@@ -68,12 +68,7 @@ function decode(_data) {
                 for (let j = 0; j < d.length; j++) {
                     if (d[j] === "") continue;
                     let _detail = parseDetail(d[j]);
-                    _tempNoteData.note.push(new Note(
-                        d[j][0],
-                        d[j][1] == '<' ? '' : d[j][1],
-                        timeSum,
-                        _detail
-                    ));
+                    _tempNoteData.note.push(new Note(d[j][0], d[j][1] == '<' ? '' : d[j][1], timeSum, _detail));
                     if (_detail) {
                         if (_detail.holdTime) {
                             if (endTime < _detail.holdTime) {
@@ -83,18 +78,16 @@ function decode(_data) {
                     }
                 }
                 d = '';
+                continue;
             }
 
             if (d.includes("<") && d.includes(">")) {
-                _tempNoteData.note.push(new Note(
-                    d[0],
-                    d[1] == '<' ? '' : d[1],
-                    timeSum,
-                    parseDetail(d)
-                ));
+                _tempNoteData.note.push(new Note(d[0], d[1] == '<' ? '' : d[1], timeSum, parseDetail(d)));
+                timeSum += (4 / slice) * (60 / bpm);
+                continue;
             }
 
-            if (d.length >= 1 && !isNaN(d)) {
+            if (d.length >= 1) {
                 for (let j = 0; j < d.length; j++) {
                     _tempNoteData.note.push(new Note(d[j], '', timeSum));
                 }
