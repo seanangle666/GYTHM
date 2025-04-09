@@ -113,9 +113,16 @@ function update() {
     ctx.lineTo(_f2[0] + w / 2, _f2[1]);
     ctx.stroke();
 
+    if (source) {
+        document.getElementById("version").innerText = `
+        ${source.context.currentTime.toFixed(2)} ,
+        ${time.toFixed(2)} ,
+        ${(source.context.currentTime - time).toFixed(2)}`
+            ;
+    }
+
     // Draw notes
     if (song.data) {
-        if(source){document.getElementById("version").innerText = `${source.context.currentTime.toFixed(2)} , ${time.toFixed(2)} , ${(source.context.currentTime - time).toFixed(2)}`;}
         for (let n of song.data.note) {
             n.drawNote();
         }

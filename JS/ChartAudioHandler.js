@@ -87,9 +87,14 @@ function playLevelBGM() {
     }
 
     source.start();
-    setInterval(function (e) {
-        startTime = Date.now() - (source.context.currentTime + startTimeDelay) * 1000;
-    }, 3000)
+}
+
+function alignAudio() {
+    if (!source) {
+        console.warn('source not prepared yet');
+        return;
+    }
+    startTime = Date.now() - (source.context.currentTime + startTimeDelay) * 1000;
 }
 
 function playSFX(a) {

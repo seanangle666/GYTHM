@@ -20,6 +20,7 @@ class Note {
                 }
                 if (t <= 0) {
                     if (!this.actived) {
+                        alignAudio();
                         this.actived = true;
                         playSFX('guide');
                     }
