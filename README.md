@@ -1,42 +1,51 @@
 # GYTHM
 A gyroscope 2-rail rhythm game
 
-https://seanangle666.github.io/GYTHM/index.html
+[Play GYTHM](https://seanangle666.github.io/GYTHM/index.html)
 
-# Notation of the Chart
+---
 
-## 1.Metadata
+## Notation of the Chart
 
-&property = value 
+### 1. Metadata
+Use the format:  
+`&property = value`
 
-## 2.Mark out & Annotation
+---
 
-Use "()" to mark out what you want,decoder will ignore it.
-ex: (240#)
+### 2. Mark out & Annotation
 
-Use"||" to do Annotation.
-ex: |decoder will ignore the text in double pipe|
+- Use `()` to **mark out** what you want. The decoder will ignore it.  
+  Example: `(240#)`
 
-## 3.Charting
-Use "0" to "F" to  represent the position of the notes on the track and use "," to seperate notes.
+- Use `||` for **annotations**.  
+  Example: `|decoder will ignore the text in double pipe|`
 
-ex: 1,2,3,4,
+---
 
-If you have more than 1 note in same time , you can use "*".
+### 3. Charting
 
-ex: 2*4
+- Use characters `0` to `F` to represent the **position of the notes** on the track, and separate the notes with commas.  
+  Example: `1,2,3,4,`
 
-Some note need to add "detail", to add detail,you can use "<>".
-The decoder will  make the cases like <4/1> as the duration of a hold when processing things inside <> by default.
+- For multiple notes at the same time, use `*` to separate them.  
+  Example: `2*4`
 
-ex:
-If you want to add a hold , you can wrote it as : 1h<4:1>,
+- Some notes require additional **details**. To add details, use `< >`.  
+  Example: `1h<4:1>` represents a hold with duration.
 
-If you need add more property for the note , you can use <property = value>.
+- If you need to add more properties for the note, you can use `<property = value>`.  
+  Example: for a crash note, use: `0c<face = L>`
 
-ex.for the crash note , you can wrote it as : 0c<face = L>,
+---
 
+### Example
+- A **hold note**:  
+  `1h<4:1>`  
+  (This represents a hold on position 1, with a duration of 4/1.)
 
+- A **crash note** with properties:  
+  `0c<face = L>`  
+  (This represents a crash note at position 0, with the property `face = L`.)
 
-
-
+---
