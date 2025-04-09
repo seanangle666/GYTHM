@@ -37,9 +37,8 @@ Use the format:
 - If you need to add more properties for the note, you can use `<property = value>`.  
   Example: for a crash note, use: `0c<face = L>`
 
----
 
-### Example
+#### Example
 - A **hold note**:  
   `1h<4:1>`  
   (This represents a hold on position 1, with a duration of 4/1.)
