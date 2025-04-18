@@ -5,7 +5,7 @@ let song = {
     'data': null,
 }
 
-song.url.directory = './CHART/' + String(song.songId).padStart(4, '0') + '/';
+song.url.directory = './asset/CHART/' + String(song.songId).padStart(4, '0') + '/';
 song.url.fileName = 'chart_' + song.level + '.txt';
 
 fetchWithProgress(song.url.directory + song.url.fileName, progress => {
