@@ -1,4 +1,4 @@
-&DLY=0,
+&DLY=0.03,
 &TLE=Moon,
 &ART=Moodent,
 &DES=Seanangle,

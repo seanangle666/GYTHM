@@ -15,8 +15,5 @@ fetchWithProgress(song.url.directory + song.url.fileName, progress => {
     .then(data => {
         console.log('譜面下載完成');
         song.data = decode(data);
-        if (song.data.infos['DLY']) {
-            startTimeDelay += parseFloat(song.data.infos['DLY']);
-        };
     })
     .catch(error => console.error('讀取檔案失敗:', error));

@@ -33,12 +33,10 @@ let color = {
 
 async function startChart() {
     await loadTrack();
-    await prepareBGM();
+    //await prepareBGM();
     startTime = Date.now();
     start = true;
-    setTimeout(() => {
-        playLevelBGM();
-    }, startTimeDelay * 1000);
+    playLevelBGM();
 }
 
 function resizeCanvas() {
@@ -49,6 +47,8 @@ function resizeCanvas() {
 function to3D(x, y, z) {
     // to3d(rail, canvas height, time)
     const zMul = 1;
+    let xOffest = 0, yOffest = 0, zOffest = 0;
+    x += xOffest, y += yOffest, z += zOffest;
     return z > 0 ? [x / z * zMul, y / z * zMul] : [-Infinity, -Infinity];
 }
 
@@ -69,7 +69,13 @@ window.addEventListener('resize', resizeCanvas);
 let u = 0; // 定義 'u' 避免錯誤
 
 function update() {
-    if (start) { time = (Date.now() - startTime) / 1000 - startTimeDelay; }
+    if (bgmElement) {
+        if (start) {
+            time = (bgmElement.currentTime - 9 + parseFloat(song.data.infos['DLY'] ?? '0'));
+        } else {
+            time = parseFloat(song.data.infos['DLY'] ?? '0') - startTimeDelay;
+        }
+    }
     w = canvas.width;
     h = canvas.height;
     railW = h / (railNums / 2);
@@ -113,11 +119,11 @@ function update() {
     ctx.lineTo(_f2[0] + w / 2, _f2[1]);
     ctx.stroke();
 
-    if (source) {
+    if (bgmElement) {
         document.getElementById("version").innerText = `
-        ${source.context.currentTime.toFixed(2)} ,
+        ${(bgmElement.currentTime - 9).toFixed(2)} ,
         ${time.toFixed(2)} ,
-        ${(source.context.currentTime - time).toFixed(2)}`
+        ${((bgmElement.currentTime - 9) - time).toFixed(2)}`
             ;
     }
 
