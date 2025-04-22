@@ -11,6 +11,8 @@ A gyroscope 2-rail rhythm game
 Use the format:  
 `&property = value`
 
+***The track audio should have 9 seconds silence at start.***
+
 ---
 
 ### 2. Mark out & Annotation

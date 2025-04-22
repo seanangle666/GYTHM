@@ -5,7 +5,7 @@ let song = {
     'data': null,
 }
 
-song.url.directory = './CHART/' + String(song.songId).padStart(4, '0') + '/';
+song.url.directory = './asset/CHART/' + String(song.songId).padStart(4, '0') + '/';
 song.url.fileName = 'chart_' + song.level + '.txt';
 
 fetchWithProgress(song.url.directory + song.url.fileName, progress => {
@@ -15,8 +15,5 @@ fetchWithProgress(song.url.directory + song.url.fileName, progress => {
     .then(data => {
         console.log('譜面下載完成');
         song.data = decode(data);
-        if (song.data.infos['DLY']) {
-            startTimeDelay += parseFloat(song.data.infos['DLY']);
-        };
     })
     .catch(error => console.error('讀取檔案失敗:', error));

@@ -1,4 +1,5 @@
 const Music = new AudioContext();
+let bgmElement = document.getElementById('bgm');
 
 let source = null;
 let audioBuffer = null;
@@ -14,7 +15,7 @@ async function loadSFX() {
     sfx.guide = await Music.decodeAudioData(arrayBuffer);
 }
 
-async function loadTrack() {
+/*async function loadTrack() {
     // 轉換 Blob 為 ArrayBuffer 的工具函式，加入類型檢查
     function blobToArrayBuffer(blob) {
         if (!(blob instanceof Blob)) {
@@ -67,9 +68,43 @@ async function loadTrack() {
     } catch (err) {
         console.error('解碼或載入音樂失敗：', err);
     }
+}*/
+
+async function loadTrack() {
+    bgmElement = document.getElementById('bgm');
+    const cacheKey = 'song_' + song.songId;
+
+    try {
+        let blob = await getFromDB(cacheKey);
+
+        if (!(blob instanceof Blob)) {
+            console.warn('從 IndexedDB 取得的不是 Blob，將重新下載');
+            blob = await fetchWithProgress(song.url.directory + 'track.mp3', progress => {
+                console.log(`下載進度：${(progress * 100).toFixed(2)}%`);
+            });
+
+            if (!(blob instanceof Blob)) {
+                throw new Error('下載後的資料不是 Blob');
+            }
+
+            await saveToDB(cacheKey, blob);
+            console.log('音樂已快取 ✅');
+        } else {
+            console.log('從 IndexedDB 載入音樂 ✅');
+        }
+
+        // 建立 URL 並綁定給 audio 元素
+        const audioURL = URL.createObjectURL(blob);
+        bgmElement.src = audioURL;
+        bgmElement.load(); // 可選，加了會比較保險
+        console.log('已綁定音樂至 <audio> 元素');
+
+    } catch (err) {
+        console.error('載入音樂失敗：', err);
+    }
 }
 
-function prepareBGM() {
+/*function prepareBGM() {
     if (!audioBuffer) {
         console.warn('Audio not loaded yet');
         return;
@@ -78,24 +113,20 @@ function prepareBGM() {
     source = Music.createBufferSource();
     source.buffer = audioBuffer;
     source.connect(Music.destination);
-}
+}*/
 
 function playLevelBGM() {
-    if (!source) {
-        console.warn('source not prepared yet');
-        return;
-    }
-
-    source.start();
+    bgmElement.currentTime = 9 - startTimeDelay;
+    bgmElement.play();
 }
 
-function alignAudio() {
+/*function alignAudio() {
     if (!source) {
         console.warn('source not prepared yet');
         return;
     }
     startTime = Date.now() - (source.context.currentTime + startTimeDelay) * 1000;
-}
+}*/
 
 function playSFX(a) {
     if (!sfx[a]) {
