@@ -1,4 +1,7 @@
-@import url('../asset/Fonts/SEGOEICONS.TTF');
+@font-face {
+    font-family: Icon;
+    src: url('../asset/Fonts/SEGOEICONS.TTF');
+}
 
 body {
     font-family: Arial, sans-serif;
@@ -137,4 +140,3 @@ body {
     box-shadow: 0 0 4px black;
     cursor: pointer;
 }
-
