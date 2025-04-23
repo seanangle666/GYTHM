@@ -1,3 +1,5 @@
+const DetailPattern = /^<[^<>]+>$/;
+
 function decode(_data) {
     _data = _data.replace(/[()]|(\|.*\|)/g, "").replace(/(?:\r\n|\r|\n)/g, '').split(",");
 
@@ -49,6 +51,12 @@ function decode(_data) {
                 continue;
             }
 
+            if (DetailPattern.test(d)) {
+                _tempNoteData.note.push(new Note(-1, "" , timeSum, parseDetail(d)));
+                timeSum += (4 / slice) * (60 / bpm);
+                continue;
+            }
+
             d = d.replace(/\s/g, "");
 
             if (d.includes("#")) {   // 解析 bpm 設定：用井字號包住的數字，例如 "120#"
@@ -67,6 +75,10 @@ function decode(_data) {
                 d = d.split("*");
                 for (let j = 0; j < d.length; j++) {
                     if (d[j] === "") continue;
+                    if (DetailPattern.test(d[j])) {
+                        _tempNoteData.note.push(new Note(-1, "" , timeSum, parseDetail(d[j])));
+                        continue;
+                    }
                     let _detail = parseDetail(d[j]);
                     _tempNoteData.note.push(new Note(d[j][0], d[j][1] == '<' ? '' : d[j][1], timeSum, _detail));
                     if (_detail) {
@@ -78,6 +90,7 @@ function decode(_data) {
                     }
                 }
                 d = '';
+                timeSum += (4 / slice) * (60 / bpm);
                 continue;
             }
 

@@ -2,7 +2,12 @@ const noteHeight = 0.1;
 
 class Note {
     constructor(rail, type, _time, detail) {
-        this.rail = parseInt(`${rail}`,16)/2;
+        if (rail == -1) {
+            this.rail = rail;
+        }
+        else {
+            this.rail = parseInt(`${rail}`, 16) / 2;
+        }
         this.type = type ?? ''; // empty : Tap, h: Hold, f: Flick, c: Crash, g: Change
         this._time = _time;
         this.detail = detail;
@@ -10,7 +15,7 @@ class Note {
     }
 
     drawNote() {
-        let t = (this._time / playbackSpeed - time);
+        let t = (this._time / playbackSpeed - time) * HiSpeed;
         let _t = t * speed + jdHeight;
         switch (this.type) {
             default: // Tap Note

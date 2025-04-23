@@ -13,6 +13,7 @@ let start = false,
     railW = 0,
     railNums = 8, // 軌道數量 :)
     speed = 10,
+    HiSpeed = 1,
     playbackSpeed = 1;
 
 let canvas = document.querySelector('#screen'),
@@ -130,7 +131,9 @@ function update() {
     // Draw notes
     if (song.data) {
         for (let n of song.data.note) {
-            n.drawNote();
+            if (n.rail != -1) {
+                n.drawNote();
+            }
         }
     }
 
